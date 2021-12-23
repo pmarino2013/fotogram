@@ -108,28 +108,47 @@ const corazonRojo = function (item) {
 
 //Funcion me gusta cuando hacemos clic en el corazon
 const meGusta = function (id) {
-  // console.log(corazon);
-  let foto = datos.find(function (item) {
+  //obtengo posicion de la foto en el arreglo de datos
+  let indice = datos.findIndex(function (item) {
     return item.id === id;
   });
 
-  let validarUsuario = foto.userLike.find(function (item) {
+  //chequeo que el usuario logueado no exista en el arreglo de usuarios que dieron me gusta
+  let validarUsuario = datos[indice].userLike.find(function (item) {
     return item === usuario.username;
   });
 
+  //Si el usuario no le dio Like
   if (!validarUsuario) {
-    foto.like += 1;
-    foto.userLike.push(usuario.username);
-
-    let indice = datos.findIndex(function (item) {
-      return item.id === id;
-    });
-
-    datos[indice].like = foto.like;
-    datos[indice].userLike = foto.userLike;
+    datos[indice].like += 1;
+    datos[indice].userLike.push(usuario.username);
     localStorage.setItem("posteos", JSON.stringify(datos));
     crearCards();
   }
+
+  //Código anterior---------------------------------------
+
+  // let foto = datos.find(function (item) {
+  //   return item.id === id;
+  // });
+
+  // let validarUsuario = foto.userLike.find(function (item) {
+  //   return item === usuario.username;
+  // });
+
+  // if (!validarUsuario) {
+  //   foto.like += 1;
+  //   foto.userLike.push(usuario.username);
+
+  //   let indice = datos.findIndex(function (item) {
+  //     return item.id === id;
+  //   });
+
+  //   datos[indice].like = foto.like;
+  //   datos[indice].userLike = foto.userLike;
+  //   localStorage.setItem("posteos", JSON.stringify(datos));
+  //   crearCards();
+  // }
 };
 
 crearCards();
