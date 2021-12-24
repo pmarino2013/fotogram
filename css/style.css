@@ -29,3 +29,11 @@
 .like:hover{
   cursor: pointer;
 }
+
+.modal-body img{
+  width: 100%;
+}
+
+.modal-body textarea{
+  resize: none;
+}

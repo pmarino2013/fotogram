@@ -1,3 +1,15 @@
+//clase para crear publicaciones
+class Publicacion {
+  constructor(id, usuario, detalle, img, like = 0, userLike = []) {
+    this.id = id;
+    this.usuario = usuario;
+    this.detalle = detalle;
+    this.img = img;
+    this.like = like;
+    this.userLike = userLike;
+  }
+}
+
 // let datos = [
 //   {
 //     id: 1,
@@ -29,15 +41,26 @@
 //   localStorage.setItem("posteos", JSON.stringify(datos));
 // };
 
+//traemos las fotos desde localstorage
 let datos = JSON.parse(localStorage.getItem("posteos")) || [];
-
+//Obtenemos los datos del usuario logueado
 let usuario = JSON.parse(localStorage.getItem("usuario"));
-// console.log(usuario);
 
+//Capturamos el contenedor para los datos de usuario
 let contenedor_avatar = document.querySelector("#card_avatar");
+
+//Capturamos contenedor para las cards
 let contenedor_cards = document.querySelector("#contenedor_cards");
 
-// let div = document.createElement("div");
+//---variable si la imagen que se agrega está rota-----------
+let imgRota = true;
+
+//capturamos el modal que usamos para agregar publivaciones
+let myModal = new bootstrap.Modal(document.getElementById("nuevaPublic"), {
+  keyboard: false,
+});
+
+//creamos estructura con la info del usuario
 let estructura_avatar = `
 <div>
 <img
@@ -51,8 +74,7 @@ src=${usuario.avatar}
 </div>
 `;
 
-// div.innerHTML = estructura_avatar;
-// contenedor_avatar.appendChild(div);
+//agregamos la estructura de la card con datos del usuario a su contenedor
 contenedor_avatar.innerHTML = estructura_avatar;
 
 //Crear Tarjetas--------------------------------------
@@ -122,9 +144,22 @@ const meGusta = function (id) {
   if (!validarUsuario) {
     datos[indice].like += 1;
     datos[indice].userLike.push(usuario.username);
-    localStorage.setItem("posteos", JSON.stringify(datos));
-    crearCards();
+  } else {
+    datos[indice].like -= 1;
+
+    //----borrar usuario del arreglo userLike-----
+
+    //buscar el indice del usuaario en el arreglo
+    let indiceUser = datos[indice].userLike.findIndex(function (user) {
+      return user === usuario.username;
+    });
+    //borrar el usuario con su indice
+    datos[indice].userLike.splice(indiceUser, 1);
   }
+
+  //guardar cambios en localstorage y recargar tarjetas
+  localStorage.setItem("posteos", JSON.stringify(datos));
+  crearCards();
 
   //Código anterior---------------------------------------
 
@@ -151,5 +186,75 @@ const meGusta = function (id) {
   // }
 };
 
+//Función agregar imagen------------------------
+const agregarImagen = function (e) {
+  let campo = document.querySelector("#text_modal");
+  // imgRota = false;
+  if (e.keyCode === 13) {
+    console.log(e);
+    console.log(campo.value);
+    document.querySelector("#img_modal").src = campo.value;
+
+    if (imgRota) {
+      alert("La imagen es inválida");
+      document.querySelector("#text_modal").value = "";
+      document.querySelector("#img_modal").src =
+        "https://www.reservacostanera.com.ar/assets/camaleon_cms/image-not-found-4a963b95bf081c3ea02923dceaeb3f8085e1a654fc54840aac61a57a60903fef.png";
+      imgRota = false;
+    }
+  }
+};
+//--------------------------------------------------
+
+//Funcion Guardar publicacion----------------------------
+const guardarPublicacion = function () {
+  let id = new Date().getTime();
+  let user = usuario.username;
+  let detalle = document.querySelector("#modal_textarea").value;
+  let imagen = document.querySelector("#img_modal").src;
+  console.log(imagen);
+  if (imagen === "http://127.0.0.1:5500/img/error_img.png") {
+    return alert("La imagen no es válida");
+  }
+  if (detalle.length < 10) {
+    return alert("La descripción debe tener más de 10 caracteres");
+  }
+  console.log("exito");
+
+  datos.unshift(new Publicacion(id, user, detalle, imagen));
+  localStorage.setItem("posteos", JSON.stringify(datos));
+  crearCards();
+
+  limpiarModal();
+};
+
+//-------------------------------------------------------
+
+//-------Limpiar Modal---------------------
+const limpiarModal = function () {
+  document.querySelector("#text_modal").value = "";
+  document.querySelector("#img_modal").src = "../img/error_img.png";
+
+  document.querySelector("#modal_textarea").value = "";
+  imgRota = false;
+  myModal.hide();
+};
+//----------------------------------------------------
+
+
+//Si hacemos click en el boton para agregar publicación
+document.querySelector("#addPublic").addEventListener("click", function () {
+  myModal.show();
+});
+
+//Si presionamos una tecla en el input del modal donde va la imagen
+document.querySelector("#text_modal").addEventListener("keydown", agregarImagen);
+
+//Obtenemos el error cuando la imagen no es correcta y cambiamos el valor de imgRota
+document.querySelector("#img_modal").addEventListener("onerror", function () {
+  imgRota = true;
+});
+
+//Carga inicial de fotos
 crearCards();
 // inicializarDatos(datos);
