@@ -1,3 +1,4 @@
+
 //clase para crear publicaciones
 class Publicacion {
   constructor(id, usuario, detalle, img, like = 0, userLike = []) {
@@ -7,6 +8,16 @@ class Publicacion {
     this.img = img;
     this.like = like;
     this.userLike = userLike;
+  }
+}
+class Comentario{
+  constructor(id, id_foto, usuario,comentario){
+
+      this.id=id
+      this.id_foto=id_foto
+      this.usuario=usuario
+      this.comentario=comentario
+
   }
 }
 
@@ -45,6 +56,9 @@ class Publicacion {
 let datos = JSON.parse(localStorage.getItem("posteos")) || [];
 //Obtenemos los datos del usuario logueado
 let usuario = JSON.parse(localStorage.getItem("usuario"));
+//Obtener comentarios
+let coment=JSON.parse(localStorage.getItem('comentarios')) || []
+
 
 //Capturamos el contenedor para los datos de usuario
 let contenedor_avatar = document.querySelector("#card_avatar");
@@ -77,6 +91,9 @@ src=${usuario.avatar}
 //agregamos la estructura de la card con datos del usuario a su contenedor
 contenedor_avatar.innerHTML = estructura_avatar;
 
+
+
+
 //Crear Tarjetas--------------------------------------
 const crearCards = function (array) {
   //limpiamos contenedor
@@ -95,8 +112,8 @@ const crearCards = function (array) {
                 class="card-img-top"
                 alt=${item.detalle}
               />
-              <div class="card-body">
-              <div class="d-flex justify-content-between">
+        <div class="card-body">
+            <div class="d-flex justify-content-between">
                 <div>
                    <span class="like" onclick="meGusta(${item.id})">
                  ${
@@ -108,15 +125,31 @@ const crearCards = function (array) {
 
                 </div>
                 <div>
-                ${item.detalle}
+                  ${item.detalle}
                 </div>
-              </div>
+            </div>
               <p>${item.like} Me gusta</p>
-             </div> 
+
+              <div id="contenedor_parrafo${item.id}">
+              </div>
+             
+
+
+            </div>
+        <div class="card-footer d-flex align-items-center">
+          <div class="col-10">
+            <textarea class="form-control" id="textarea${item.id}" rows="1" placeholder="Agregar un comentario"></textarea>
+          </div>
+          <div class="col-2 ms-2">
+              <span class="text-primary" role="button"  onclick="crearComentario(${item.id})">Publicar</span>
+          
+          </div>
+        </div>   
         `;
 
     card.innerHTML = contenido_card;
     contenedor_cards.appendChild(card);
+    mostrarComentario(item.id)
   });
 };
 
@@ -243,7 +276,7 @@ const limpiarModal = function () {
 };
 //----------------------------------------------------
 
-//----buscar usuario-------
+//----buscar usuario---------------------------
 
 const buscarUsuario = function (e) {
   e.preventDefault();
@@ -256,6 +289,44 @@ const buscarUsuario = function (e) {
   console.log(resultado);
   crearCards(resultado);
 };
+//---------------------------------
+
+//------Crear comentario------------------
+
+const crearComentario=function(id){
+  let id_comentario=new Date().getTime()
+  let id_foto=id
+  let user=usuario.username
+  let comentario=document.querySelector(`#textarea${id}`).value
+  
+  if(comentario.length>4){
+
+    coment.push(new Comentario(id_comentario,id_foto,user,comentario))
+    localStorage.setItem('comentarios',JSON.stringify(coment))
+    
+    crearCards(datos)
+    // mostrarComentario(id)
+  }
+  
+  }
+
+//Mostrar comentario-------------------------------
+const mostrarComentario=function(id){
+  let comentarios=coment.filter(function(comentario){
+  return comentario.id_foto===id
+  })
+  document.querySelector(`#contenedor_parrafo${id}`).innerHTML=""
+
+  comentarios.map(function(item){
+
+    let parrafo=document.createElement('p')
+    parrafo.innerHTML=`<b>${item.usuario}</b> ${item.comentario}`
+    document.querySelector(`#contenedor_parrafo${id}`).append(parrafo)
+  // console.log(comentarios)
+  // return texto
+})
+}
+
 
 //Si hacemos click en el boton para agregar publicación
 document.querySelector("#addPublic").addEventListener("click", function () {
@@ -277,6 +348,8 @@ document.querySelector("#refrescar").addEventListener("click", function () {
   document.querySelector("#inputBuscar").value = "";
 });
 
+// crearComentario(1640400168547)
 //Carga inicial de fotos
 crearCards(datos);
 // inicializarDatos(datos);
+
