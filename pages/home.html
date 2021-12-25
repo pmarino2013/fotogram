@@ -33,13 +33,17 @@
             <span class="navbar-toggler-icon"></span>
           </button> -->
           <div>
-            <form>
-              <input
-                class="form-control"
-                type="search"
-                placeholder="Buscar"
-                aria-label="Search"
-              />
+            <form onsubmit="buscarUsuario(event)">
+              <div class="d-flex align-items-center">
+
+                <input
+                  class="form-control"
+                  type="search"
+                  placeholder="Buscar"
+                  aria-label="Search"
+                  id="inputBuscar"
+                /><i class="fa fa-refresh ms-2" id="refrescar" aria-hidden="true"></i>
+              </div>
             </form>
           </div>
           <div>

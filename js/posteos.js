@@ -78,14 +78,16 @@ src=${usuario.avatar}
 contenedor_avatar.innerHTML = estructura_avatar;
 
 //Crear Tarjetas--------------------------------------
-const crearCards = function () {
+const crearCards = function (array) {
   //limpiamos contenedor
   contenedor_cards.innerHTML = "";
 
-  datos.map(function (item) {
+  if (array.length === 0) {
+    return (contenedor_cards.innerHTML = `<h4>No se encontraron resultados para la búsqueda</h4>`);
+  }
+  array.map(function (item) {
     let card = document.createElement("div");
     card.classList = "card mb-3";
-
     let contenido_card = `
         <div class="card-header">${item.usuario}</div>
               <img
@@ -159,7 +161,7 @@ const meGusta = function (id) {
 
   //guardar cambios en localstorage y recargar tarjetas
   localStorage.setItem("posteos", JSON.stringify(datos));
-  crearCards();
+  crearCards(datos);
 
   //Código anterior---------------------------------------
 
@@ -223,7 +225,7 @@ const guardarPublicacion = function () {
 
   datos.unshift(new Publicacion(id, user, detalle, imagen));
   localStorage.setItem("posteos", JSON.stringify(datos));
-  crearCards();
+  crearCards(datos);
 
   limpiarModal();
 };
@@ -241,6 +243,19 @@ const limpiarModal = function () {
 };
 //----------------------------------------------------
 
+//----buscar usuario-------
+
+const buscarUsuario = function (e) {
+  e.preventDefault();
+  let buscado = document.querySelector("#inputBuscar").value;
+
+  let resultado = datos.filter(function (foto) {
+    return foto.usuario.toUpperCase().includes(buscado.toUpperCase());
+  });
+
+  console.log(resultado);
+  crearCards(resultado);
+};
 
 //Si hacemos click en el boton para agregar publicación
 document.querySelector("#addPublic").addEventListener("click", function () {
@@ -248,13 +263,20 @@ document.querySelector("#addPublic").addEventListener("click", function () {
 });
 
 //Si presionamos una tecla en el input del modal donde va la imagen
-document.querySelector("#text_modal").addEventListener("keydown", agregarImagen);
+document
+  .querySelector("#text_modal")
+  .addEventListener("keydown", agregarImagen);
 
 //Obtenemos el error cuando la imagen no es correcta y cambiamos el valor de imgRota
 document.querySelector("#img_modal").addEventListener("onerror", function () {
   imgRota = true;
 });
 
+document.querySelector("#refrescar").addEventListener("click", function () {
+  crearCards(datos);
+  document.querySelector("#inputBuscar").value = "";
+});
+
 //Carga inicial de fotos
-crearCards();
+crearCards(datos);
 // inicializarDatos(datos);
