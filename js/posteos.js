@@ -10,6 +10,8 @@ class Publicacion {
     this.userLike = userLike;
   }
 }
+
+//Clase para crear comentarios
 class Comentario{
   constructor(id, id_foto, usuario,comentario){
 
@@ -67,9 +69,9 @@ let contenedor_avatar = document.querySelector("#card_avatar");
 let contenedor_cards = document.querySelector("#contenedor_cards");
 
 //---variable si la imagen que se agrega está rota-----------
-let imgRota = true;
+let imgRota = false;
 
-//capturamos el modal que usamos para agregar publivaciones
+//capturamos el modal que usamos para agregar publicaciones
 let myModal = new bootstrap.Modal(document.getElementById("nuevaPublic"), {
   keyboard: false,
 });
@@ -230,13 +232,13 @@ const agregarImagen = function (e) {
     console.log(campo.value);
     document.querySelector("#img_modal").src = campo.value;
 
-    if (imgRota) {
-      alert("La imagen es inválida");
-      document.querySelector("#text_modal").value = "";
-      document.querySelector("#img_modal").src =
-        "https://www.reservacostanera.com.ar/assets/camaleon_cms/image-not-found-4a963b95bf081c3ea02923dceaeb3f8085e1a654fc54840aac61a57a60903fef.png";
-      imgRota = false;
-    }
+    // if (imgRota) {
+    //   alert("La imagen es inválida");
+    //   document.querySelector("#text_modal").value = "";
+    //   document.querySelector("#img_modal").src =
+    //     "http://127.0.0.1:5500/img/error_img.png";
+    //   imgRota = false;
+    // }
   }
 };
 //--------------------------------------------------
@@ -247,15 +249,14 @@ const guardarPublicacion = function () {
   let user = usuario.username;
   let detalle = document.querySelector("#modal_textarea").value;
   let imagen = document.querySelector("#img_modal").src;
-  console.log(imagen);
-  if (imagen === "http://127.0.0.1:5500/img/error_img.png") {
+  // console.log(imagen);
+  if (imagen === "http://127.0.0.1:5500/img/error_img.png" || imgRota)  {
     return alert("La imagen no es válida");
   }
   if (detalle.length < 10) {
     return alert("La descripción debe tener más de 10 caracteres");
   }
-  console.log("exito");
-
+  
   datos.unshift(new Publicacion(id, user, detalle, imagen));
   localStorage.setItem("posteos", JSON.stringify(datos));
   crearCards(datos);
@@ -338,11 +339,24 @@ document
   .querySelector("#text_modal")
   .addEventListener("keydown", agregarImagen);
 
+  //Cuando hacemos click en el input del modal para cargar la imagen se limpia el campo
+//Tambien coloca la imagen por defecto y cambia el valor de imgRota a falso
+document.querySelector("#text_modal").addEventListener("click", function () {
+  document.querySelector("#text_modal").value = "";
+  document.querySelector("#img_modal").src = "../img/error_img.png";
+  imgRota = false;
+});
+
+  // document.querySelector("#text_modal").addEventListener('click',function(){
+  //   document.querySelector("#text_modal").value=''
+  // })
+
 //Obtenemos el error cuando la imagen no es correcta y cambiamos el valor de imgRota
 document.querySelector("#img_modal").addEventListener("onerror", function () {
   imgRota = true;
 });
 
+//refrescar datos----------------------------------------------------
 document.querySelector("#refrescar").addEventListener("click", function () {
   crearCards(datos);
   document.querySelector("#inputBuscar").value = "";
