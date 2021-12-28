@@ -23,6 +23,7 @@ class Comentario{
   }
 }
 
+
 // let datos = [
 //   {
 //     id: 1,
@@ -57,7 +58,17 @@ class Comentario{
 //traemos las fotos desde localstorage
 let datos = JSON.parse(localStorage.getItem("posteos")) || [];
 //Obtenemos los datos del usuario logueado
-let usuario = JSON.parse(localStorage.getItem("usuario"));
+let usuario = JSON.parse(localStorage.getItem("usuario") || null);
+
+
+//----------------Menu-------------------
+let menuPrincipal=document.querySelector('#menu')
+if(!usuario){
+  menuPrincipal.innerHTML=''
+}
+
+
+
 //Obtener comentarios
 let coment=JSON.parse(localStorage.getItem('comentarios')) || []
 
@@ -81,7 +92,7 @@ let estructura_avatar = `
 <div>
 <img
 class="avatar"
-src=${usuario.avatar}
+src="../img/${usuario.avatar}.png"
 />
 </div>
 <div>
@@ -198,29 +209,7 @@ const meGusta = function (id) {
   localStorage.setItem("posteos", JSON.stringify(datos));
   crearCards(datos);
 
-  //Código anterior---------------------------------------
-
-  // let foto = datos.find(function (item) {
-  //   return item.id === id;
-  // });
-
-  // let validarUsuario = foto.userLike.find(function (item) {
-  //   return item === usuario.username;
-  // });
-
-  // if (!validarUsuario) {
-  //   foto.like += 1;
-  //   foto.userLike.push(usuario.username);
-
-  //   let indice = datos.findIndex(function (item) {
-  //     return item.id === id;
-  //   });
-
-  //   datos[indice].like = foto.like;
-  //   datos[indice].userLike = foto.userLike;
-  //   localStorage.setItem("posteos", JSON.stringify(datos));
-  //   crearCards();
-  // }
+  
 };
 
 //Función agregar imagen------------------------
@@ -228,17 +217,10 @@ const agregarImagen = function (e) {
   let campo = document.querySelector("#text_modal");
   // imgRota = false;
   if (e.keyCode === 13) {
-    console.log(e);
-    console.log(campo.value);
+    // console.log(e);
+    // console.log(campo.value);
     document.querySelector("#img_modal").src = campo.value;
 
-    // if (imgRota) {
-    //   alert("La imagen es inválida");
-    //   document.querySelector("#text_modal").value = "";
-    //   document.querySelector("#img_modal").src =
-    //     "http://127.0.0.1:5500/img/error_img.png";
-    //   imgRota = false;
-    // }
   }
 };
 //--------------------------------------------------
@@ -352,7 +334,7 @@ document.querySelector("#text_modal").addEventListener("click", function () {
   // })
 
 //Obtenemos el error cuando la imagen no es correcta y cambiamos el valor de imgRota
-document.querySelector("#img_modal").addEventListener("onerror", function () {
+document.querySelector("#img_modal").addEventListener("error", function () {
   imgRota = true;
 });
 
@@ -361,6 +343,12 @@ document.querySelector("#refrescar").addEventListener("click", function () {
   crearCards(datos);
   document.querySelector("#inputBuscar").value = "";
 });
+
+document.querySelector('#logout').addEventListener('click',function(){
+
+  localStorage.removeItem('usuario')
+  location.href='../index.html'
+})
 
 // crearComentario(1640400168547)
 //Carga inicial de fotos

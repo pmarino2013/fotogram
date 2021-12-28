@@ -11,3 +11,10 @@ img{
 .card{
     padding: 30px;
 }
+
+.img-card{
+    align-self: center;
+}
+a{
+    text-decoration: none;
+}
