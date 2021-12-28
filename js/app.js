@@ -32,6 +32,31 @@ const agregarUsuario = function (user) {
 agregarUsuario(user1);
 agregarUsuario(user2);
 
+//form registro-------------------------------------------
+let forms = document.querySelectorAll('.needs-validation')
+console.log(forms)
+  // Loop over them and prevent submission
+  Array.prototype.slice.call(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }else{
+          event.preventDefault()
+            console.log('todo bien')
+        }
+
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+
+//---------------------------------------------
+
+
+
+
 const validarDatos = function () {
   let inputEmail = document.querySelector("#input_email").value;
   let inputPassword = document.querySelector("#input_password").value;
