@@ -26,14 +26,22 @@
   border-radius: 100%;
 }
 
-.like:hover{
+.like:hover {
   cursor: pointer;
 }
 
-.modal-body img{
+.modal-body img {
   width: 100%;
 }
 
-textarea{
+textarea {
   resize: none;
+}
+
+table td {
+  vertical-align: middle;
+}
+
+.img_modal_avatar img {
+  width: 150px;
 }

@@ -1,0 +1,20 @@
+body {
+  background-color: rgb(213, 216, 216);
+}
+.container {
+  height: 100vh;
+}
+img {
+  width: 100%;
+}
+
+.card {
+  padding: 30px;
+}
+
+.img-card {
+  align-self: center;
+}
+a {
+  text-decoration: none;
+}
