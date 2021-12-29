@@ -1,3 +1,14 @@
+class Publicacion {
+  constructor(id, usuario, detalle, imagen, like = 0, userLike = []) {
+    this.id = id;
+    this.usuario = usuario;
+    this.detalle = detalle;
+    this.img = imagen;
+    this.like = like;
+    this.userLike = userLike;
+  }
+}
+
 // let datos = [
 //   {
 //     id: 1,
@@ -36,6 +47,12 @@ let usuario = JSON.parse(localStorage.getItem("usuario"));
 
 let contenedor_avatar = document.querySelector("#card_avatar");
 let contenedor_cards = document.querySelector("#contenedor_cards");
+
+let imgRota = false;
+
+let myModal = new bootstrap.Modal(document.getElementById("nuevaPublic"), {
+  keyboard: false,
+});
 
 // let div = document.createElement("div");
 let estructura_avatar = `
@@ -118,38 +135,96 @@ const meGusta = function (id) {
     return item === usuario.username;
   });
 
+  console.log(validarUsuario);
   //Si el usuario no le dio Like
+  console.log(datos[indice].userLike.indexOf(validarUsuario));
   if (!validarUsuario) {
     datos[indice].like += 1;
     datos[indice].userLike.push(usuario.username);
-    localStorage.setItem("posteos", JSON.stringify(datos));
-    crearCards();
+  } else {
+    datos[indice].like -= 1;
+    let indiceUsuario = datos[indice].userLike.indexOf(validarUsuario);
+    datos[indice].userLike.splice(indiceUsuario, 1);
   }
 
-  //Código anterior---------------------------------------
-
-  // let foto = datos.find(function (item) {
-  //   return item.id === id;
-  // });
-
-  // let validarUsuario = foto.userLike.find(function (item) {
-  //   return item === usuario.username;
-  // });
-
-  // if (!validarUsuario) {
-  //   foto.like += 1;
-  //   foto.userLike.push(usuario.username);
-
-  //   let indice = datos.findIndex(function (item) {
-  //     return item.id === id;
-  //   });
-
-  //   datos[indice].like = foto.like;
-  //   datos[indice].userLike = foto.userLike;
-  //   localStorage.setItem("posteos", JSON.stringify(datos));
-  //   crearCards();
-  // }
+  localStorage.setItem("posteos", JSON.stringify(datos));
+  crearCards();
 };
+
+//funcion parea agregar imagen en el modal
+const agregarImagen = function (e) {
+  //capturo el campo texto del modal
+  let campo = document.querySelector("#text_modal");
+
+  //pregunto si la tecla que se presionó es el enter
+  // y si el campo de texto tiene algo escrito
+  if (e.keyCode === 13 && campo.value.length > 0) {
+  
+    //actualizo la imagen con la url que escribí en el campo de texto
+    document.querySelector("#img_modal").src = campo.value;
+  }
+};
+
+//Guardar publicacion
+const guardarPublicacion = function () {
+  let id = new Date().getTime();
+  let user = usuario.username;
+  let detalle = document.querySelector("#modal_textarea").value;
+  let imagen = document.querySelector("#img_modal").src;
+
+  //si la imagen es la por defecto o imgRota está en true
+  if (imagen === "http://127.0.0.1:5500/img/error_img.png" || imgRota) {
+    return alert("Imagen no válida");
+  }
+
+  //Si el detalle o descripcion de la imagen tiene menos de 10 caracteres
+  if (detalle.length < 10) {
+    return alert("La descripción debe tener un mínimo de 10 caracteres");
+  }
+
+  //agregamos la publicacion al principio
+  datos.unshift(new Publicacion(id, user, detalle, imagen));
+  //Guardamos en localStorage
+  localStorage.setItem("posteos", JSON.stringify(datos));
+  //Cargamos las tarjetas actualizadas
+  crearCards();
+  //limpiamos el modal
+  limpiarModal();
+};
+
+//limpiamos el modal y lo dejamos listo para otra carga
+const limpiarModal = function () {
+  document.querySelector("#text_modal").value = "";
+  document.querySelector("#img_modal").src = "../img/error_img.png";
+  document.querySelector("#modal_textarea").value = "";
+  imgRota = false;
+  myModal.hide();
+};
+
+//-----------Sección de eventListeners----------------------------
+
+//Mostrar modal cuando hacemos click en la opción del navbar
+document.querySelector("#addPublic").addEventListener("click", function () {
+  myModal.show();
+});
+
+//Cuando damos enter en el input para cargar la imagen del modal
+document
+  .querySelector("#text_modal")
+  .addEventListener("keydown", agregarImagen);
+
+//Cuando hacemos click en el input del modal para cargar la imagen se limpia el campo
+//Tambien coloca la imagen por defecto y cambia el valor de imgRota a falso
+document.querySelector("#text_modal").addEventListener("click", function () {
+  document.querySelector("#text_modal").value = "";
+  document.querySelector("#img_modal").src = "../img/error_img.png";
+  imgRota = false;
+});
+
+//Obtenemos el error cuando la imagen no es correcta y cambiamos el valor de imgRota
+document.querySelector("#img_modal").addEventListener("error", function () {
+  imgRota = true;
+});
 
 crearCards();
 // inicializarDatos(datos);
