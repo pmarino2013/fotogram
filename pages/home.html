@@ -18,7 +18,10 @@
   </head>
   <body>
     <header class="sticky-top">
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <nav
+        id="menuPrincipal"
+        class="navbar navbar-expand-lg navbar-light bg-light"
+      >
         <div class="container justify-content-evenly">
           <a class="navbar-brand" href="#"><b>🅵🅾🆃🅾🅶🆁🅰🅼</b></a>
           <!-- <button
@@ -54,6 +57,16 @@
                   id="addPublic"
                 >
                   <i class="fa fa-plus-square-o fa-2x" aria-hidden="true"></i>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link active"
+                  aria-current="page"
+                  href="#"
+                  id="logout"
+                >
+                  <i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>
                 </a>
               </li>
             </ul>
@@ -129,9 +142,8 @@
             <div class="card card-fixed">
               <div id="card_avatar" class="card-body d-flex">
                 <p>
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                  Maiores natus a quia doloribus eligendi nisi soluta aut veniam
-                  aperiam officiis!
+                  Usted no se encuentra logueado en la aplicación. Para
+                  loguearse puede acceder <a href="../index.html">Aqui</a>
                 </p>
                 <!-- <img
                         src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSI3b7G544olENi0w5Nxr95EW3K3AB5a3t-mbaVh644XQIRNaRXJ2WqHAAHcJPQajU_jmo&usqp=CAU"
@@ -172,7 +184,6 @@
               id="img_modal"
               src="../img/error_img.png"
               alt="imagen de muestra"
-            
             />
 
             <div class="mt-2 d-flex align-items-center">

@@ -42,8 +42,16 @@ class Publicacion {
 
 let datos = JSON.parse(localStorage.getItem("posteos")) || [];
 
-let usuario = JSON.parse(localStorage.getItem("usuario"));
+let usuario = JSON.parse(localStorage.getItem("usuario")) || null;
 // console.log(usuario);
+
+//--------Si el usuario no está logueado
+let menuPrincipal = document.querySelector("#menuPrincipal");
+
+if (!usuario) {
+  menuPrincipal.innerHTML = "";
+}
+//---------------------------------------
 
 let contenedor_avatar = document.querySelector("#card_avatar");
 let contenedor_cards = document.querySelector("#contenedor_cards");
@@ -59,7 +67,7 @@ let estructura_avatar = `
 <div>
 <img
 class="avatar"
-src=${usuario.avatar}
+src="../img/${usuario.avatar}.png"
 />
 </div>
 <div>
@@ -159,7 +167,6 @@ const agregarImagen = function (e) {
   //pregunto si la tecla que se presionó es el enter
   // y si el campo de texto tiene algo escrito
   if (e.keyCode === 13 && campo.value.length > 0) {
-  
     //actualizo la imagen con la url que escribí en el campo de texto
     document.querySelector("#img_modal").src = campo.value;
   }
@@ -224,6 +231,12 @@ document.querySelector("#text_modal").addEventListener("click", function () {
 //Obtenemos el error cuando la imagen no es correcta y cambiamos el valor de imgRota
 document.querySelector("#img_modal").addEventListener("error", function () {
   imgRota = true;
+});
+
+//deslogueo de la app---------------------------------
+document.querySelector("#logout").addEventListener("click", function () {
+  localStorage.removeItem("usuario");
+  location.replace("../index.html");
 });
 
 crearCards();
