@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Required meta tags -->
+    
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <!-- Bootstrap CSS -->
+    <link rel="shortcut icon" href="../img/favicon.png" type="image/png">
+  
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -17,33 +17,26 @@
     <title>Fotogram</title>
   </head>
   <body>
-    <header class="sticky-top">
-      <nav
-        id="menuPrincipal"
-        class="navbar navbar-expand-lg navbar-light bg-light"
-      >
+
+    <header class="sticky-top" id="menu">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container justify-content-evenly">
           <a class="navbar-brand" href="#"><b>🅵🅾🆃🅾🅶🆁🅰🅼</b></a>
-          <!-- <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button> -->
+         
           <div>
-            <form>
+            <form onsubmit="buscarUsuario(event)">
               <div class="d-flex align-items-center">
+
+
                 <input
                   class="form-control"
                   type="search"
                   placeholder="Buscar"
                   aria-label="Search"
-                />
+
+                  id="inputBuscar"
+                /><i class="fa fa-refresh ms-2" role="button" id="refrescar" aria-hidden="true"></i>
+
               </div>
             </form>
           </div>
@@ -66,9 +59,12 @@
                   href="#"
                   id="logout"
                 >
-                  <i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>
+
+                <i class="fa fa-sign-out fa-2x" aria-hidden="true"></i></i>
+
                 </a>
               </li>
+             
             </ul>
           </div>
         </div>
@@ -79,77 +75,17 @@
       <div class="container">
         <div class="row mt-5">
           <div id="contenedor_cards" class="col-12 col-md-6 offset-md-2">
-            <!-- <div class="card">
-              <div class="card-header">Featured</div>
-              <img
-                src="https://www.nationalgeographic.com.es/medio/2021/05/05/lago-wanakanueva-zelanda_3bca218b_800x800.jpg"
-                class="card-img-top"
-                alt="..."
-              />
-              <div class="card-body">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Deserunt impedit magni consequuntur aliquid possimus reiciendis
-                nulla aperiam autem minima? Maiores alias error eos atque velit
-                possimus dignissimos, sint at est, dolorem fuga recusandae
-                ratione eligendi accusantium fugit rem et quisquam molestias
-                quia! At modi, perspiciatis eos suscipit doloribus dolor,
-                sapiente quo fugiat praesentium dolores nisi? Maxime voluptatum
-                ex repudiandae sapiente! Quia nam, quae eius ipsa fuga ipsum
-                voluptatibus nisi obcaecati, quam vitae culpa alias corrupti a,
-                harum sequi deleniti? Dolor et accusamus doloremque sequi,
-                similique maxime, itaque minus eos facilis fugiat quidem earum,
-                vero suscipit excepturi nisi necessitatibus dignissimos quia
-                quibusdam error est nihil quam esse aliquam. Sed possimus natus,
-                voluptates nobis unde aliquid atque eligendi autem facere
-                minima. Ad, natus voluptatem provident qui amet ipsam minima
-                enim non asperiores numquam quasi aperiam rem optio officia ab!
-                Accusantium iste sint minima labore error nam alias quod
-                similique incidunt dignissimos voluptates obcaecati, neque
-                pariatur eius, reiciendis ipsa saepe laboriosam maiores quaerat
-                quibusdam asperiores. Molestias nesciunt modi aliquid mollitia
-                architecto quasi eligendi, adipisci, quae nam facilis ab ullam
-                illo eaque nihil perspiciatis.
-              </div>
-            </div>
-            <div class="card mt-3">
-              <div class="card-body">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Deserunt impedit magni consequuntur aliquid possimus reiciendis
-                nulla aperiam autem minima? Maiores alias error eos atque velit
-                possimus dignissimos, sint at est, dolorem fuga recusandae
-                ratione eligendi accusantium fugit rem et quisquam molestias
-                quia! At modi, perspiciatis eos suscipit doloribus dolor,
-                sapiente quo fugiat praesentium dolores nisi? Maxime voluptatum
-                ex repudiandae sapiente! Quia nam, quae eius ipsa fuga ipsum
-                voluptatibus nisi obcaecati, quam vitae culpa alias corrupti a,
-                harum sequi deleniti? Dolor et accusamus doloremque sequi,
-                similique maxime, itaque minus eos facilis fugiat quidem earum,
-                vero suscipit excepturi nisi necessitatibus dignissimos quia
-                quibusdam error est nihil quam esse aliquam. Sed possimus natus,
-                voluptates nobis unde aliquid atque eligendi autem facere
-                minima. Ad, natus voluptatem provident qui amet ipsam minima
-                enim non asperiores numquam quasi aperiam rem optio officia ab!
-                Accusantium iste sint minima labore error nam alias quod
-                similique incidunt dignissimos voluptates obcaecati, neque
-                pariatur eius, reiciendis ipsa saepe laboriosam maiores quaerat
-                quibusdam asperiores. Molestias nesciunt modi aliquid mollitia
-                architecto quasi eligendi, adipisci, quae nam facilis ab ullam
-                illo eaque nihil perspiciatis.
-              </div>
-            </div> -->
+           
           </div>
           <div class="col">
             <div class="card card-fixed">
               <div id="card_avatar" class="card-body d-flex">
                 <p>
-                  Usted no se encuentra logueado en la aplicación. Para
-                  loguearse puede acceder <a href="../index.html">Aqui</a>
+
+                  Debe loguearse en la web para ver contenido. Podés hacerlo desde <a href="../index.html">aquí</a>
+
                 </p>
-                <!-- <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSI3b7G544olENi0w5Nxr95EW3K3AB5a3t-mbaVh644XQIRNaRXJ2WqHAAHcJPQajU_jmo&usqp=CAU"
-                        alt="avatar"
-                      />
-                      <span>username</span> -->
+                
               </div>
             </div>
           </div>
@@ -157,7 +93,9 @@
       </div>
     </main>
 
-    <!-- Modal de publicación  -->
+
+    <!-- Modal -->
+
     <div
       class="modal fade"
       id="nuevaPublic"
@@ -176,11 +114,15 @@
               class="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
-              onclick="limpiarModal()"
+
+              onclick='limpiarModal()'
+
             ></button>
           </div>
           <div class="modal-body">
             <img
+
+
               id="img_modal"
               src="../img/error_img.png"
               alt="imagen de muestra"
@@ -193,28 +135,28 @@
                 type="text"
                 class="form-control"
                 placeholder="Ingrese url de la imagen"
+
+                             
               />
             </div>
             <div class="mt-2">
+              
+
               <textarea
                 class="form-control"
                 id="modal_textarea"
                 placeholder="Ingresa una descripción"
                 rows="3"
+
+                
               ></textarea>
-              <small class="text-muted"
-                >La descripción debe tener mínimo 10 caracteres</small
-              >
+              <small class="text-muted">La descripción debe tener mínimo 10 caracteres</small>
             </div>
           </div>
           <div class="modal-footer">
-            <button
-              type="button"
-              onclick="guardarPublicacion()"
-              class="btn btn-primary"
-            >
-              Publicar
-            </button>
+           
+            <button type="button" onclick='guardarPublicacion()' class="btn btn-primary">Publicar</button>
+
           </div>
         </div>
       </div>
@@ -225,6 +167,6 @@
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
       crossorigin="anonymous"
     ></script>
-    <script src="../js/posteos.js"></script>
+    <script  src="../js/posteos.js"></script>
   </body>
 </html>

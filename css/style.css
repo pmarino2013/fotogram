@@ -30,18 +30,21 @@
   cursor: pointer;
 }
 
-.modal-body img {
+
+.modal-body img{
   width: 100%;
 }
 
-textarea {
+textarea{
   resize: none;
+  
 }
 
-table td {
+table td{
   vertical-align: middle;
 }
 
-.img_modal_avatar img {
+.img_modal_avatar img{
   width: 150px;
 }
+

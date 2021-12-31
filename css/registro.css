@@ -1,20 +1,21 @@
-body {
-  background-color: rgb(213, 216, 216);
+body{
+    background-color: rgb(213, 216, 216);
 }
-.container {
-  height: 100vh;
+.container{
+    height: 100vh;
 }
-img {
-  width: 100%;
-}
-
-.card {
-  padding: 30px;
+img{
+    width: 100%;
 }
 
-.img-card {
-  align-self: center;
+.card{
+    padding: 30px;
 }
-a {
-  text-decoration: none;
+
+.img-card{
+    align-self: center;
 }
+a{
+    text-decoration: none;
+}
+

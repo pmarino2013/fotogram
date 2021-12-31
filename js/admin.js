@@ -1,24 +1,31 @@
-let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 
+//traer usuario logueado
+let usuario = JSON.parse(localStorage.getItem("usuario")) || null;
+
+//traer los usuarios de la base
+let usuarios = JSON.parse(localStorage.getItem("usuarios") || []);
+
+//container
+let contenedor = document.querySelector("#contenedor");
+//Tbody de la tabla
 let contenidoTabla = document.querySelector("#cuerpoTabla");
-
+//Traigo la etiqueta form
 let form = document.querySelector("#formulario");
 
-let myModal = new bootstrap.Modal(document.getElementById("updateModal"), {
-  keyboard: false,
-});
+//habilito las funciones del modal
+let myModal = new bootstrap.Modal(document.getElementById("updateModal"));
 
+//creo variable que guarda el id del usuario
 let indiceUser = null;
 
-//---Abrir modal------
-const abrirModal = function (indice) {
-  myModal.show();
-  cargarDatosUser(indice);
-};
-
+//Crear cuerpo de la tabla
 const cargarTabla = function () {
   contenidoTabla.innerHTML = "";
-  usuarios.map(function (user, index) {
+  let usuariosActivos = usuarios.filter(function (user) {
+    return user.activo === true;
+  });
+  usuariosActivos.map(function (user, index) {
+
     let fila = document.createElement("tr");
 
     let estructura = `
@@ -39,59 +46,69 @@ const cargarTabla = function () {
   });
 };
 
-//Funcion para caragar datos en el modal
+
+//Función que abre el modal y crea los datos del usuario
+const abrirModal = function (indice) {
+  myModal.show();
+  cargarDatosUser(indice);
+};
+
+//Funcion que crea la estructura de los datos en el modal
 const cargarDatosUser = function (indice) {
   indiceUser = indice;
   let datos = `
-            <div class="mb-2 img_modal_avatar text-center">
-            <img  src="../img/${usuarios[indice].imagen}.png" alt=${usuarios[indice].nombre} />
+                <div class="mb-2 img_modal_avatar text-center">
+                <img  src="../img/${usuarios[indice].imagen}.png" alt=${usuarios[indice].nombre} />
+                                
+                </div>
+                <div class="mb-2">
+                <label><b>Correo electrónico</b></label>
+                  <input type="email" class="form-control" id="email"  value=${usuarios[indice].email} required>
+                  
+                </div>
+                <div class="mb-2">
+                <label><b>Nombre</b></label>
+                  <input type="text" class="form-control" id="nombre"  value=${usuarios[indice].nombre} required>
+                  
+                </div>
+                <div class="mb-2">
+                <label><b>Username</b></label>
+                  <input type="text" class="form-control" id="username"  value=${usuarios[indice].username} required>
+                 
+                </div>
+                
+               
+                <div class="mb-2">
+                <label><b>Cambiar avatar</b></label>
+                  <select class="form-select" id="avatar">
+                    <option selected disabled value=${usuarios[indice].imagen}>Avatar actual</option>
+                    <option value="avatar1">Mujer normal</option>
+                    <option value="avatar2">Mujer office</option>
+                    <option value="avatar4">Mujer rubia</option>
+                    <option value="avatar6">Mujer Geek</option>
+                    <option value="avatar3">Hombre profesional</option>
+                    <option value="avatar5">Hombre Geek </option>
+                  </select>
+                  <div class="invalid-feedback">
+                    Seleccione su avatar
+                  </div>
+                </div>
+                <div class="d-grid mt-3">
+                  <button class="btn btn-primary" type="submit">Actualizar</button>
+                  
+                </div>
                             
-            </div>
-            <div class="mb-2">
-            <label><b>Correo electrónico</b></label>
-            <input type="email" class="form-control" id="email"  value=${usuarios[indice].email} required>
-            
-            </div>
-            <div class="mb-2">
-            <label><b>Nombre</b></label>
-            <input type="text" class="form-control" id="nombre"  value=${usuarios[indice].nombre} required>
-            
-            </div>
-            <div class="mb-2">
-            <label><b>Username</b></label>
-            <input type="text" class="form-control" id="username"  value=${usuarios[indice].username} required>
-            
-            </div>
+    `;
 
-
-            <div class="mb-2">
-            <label><b>Cambiar avatar</b></label>
-            <select class="form-select" id="avatar">
-                <option selected disabled value=${usuarios[indice].imagen}>Avatar actual</option>
-                <option value="avatar1">Mujer normal</option>
-                <option value="avatar2">Mujer office</option>
-                <option value="avatar4">Mujer rubia</option>
-                <option value="avatar6">Mujer Geek</option>
-                <option value="avatar3">Hombre profesional</option>
-                <option value="avatar5">Hombre Geek </option>
-            </select>
-            <div class="invalid-feedback">
-                Seleccione su avatar
-            </div>
-            </div>
-            <div class="d-grid mt-3">
-            <button class="btn btn-primary" type="submit">Actualizar</button>
-            
-            </div>
-                        
-            `;
 
   form.innerHTML = datos;
 };
 
-//funcion para actualizar el usuario
+//Funcion que actualiza los datos del usuario cargado en el modal
 const updateUsuario = function (e) {
   e.preventDefault();
+
+
   usuarios[indiceUser].nombre = document.querySelector("#nombre").value;
   usuarios[indiceUser].email = document.querySelector("#email").value;
   usuarios[indiceUser].username = document.querySelector("#username").value;
@@ -102,14 +119,39 @@ const updateUsuario = function (e) {
   myModal.hide();
 };
 
-//borrar usuario
+//Funcion que borra un usuario---------------------------------------------
 const borrarUsuario = function (indice) {
-  //preguntar si esta seguro
-  // si desea borrar usar método en el arreglo usuarios
-  //actualizar localstorage
-  //mostrar mensaje de confirmación
-  //cargar la tabla de nuevo
-};
-//preguntar si esta seguro
+  let validar = confirm(
+    `Está seguro que quiere eliminar al usuario ${usuarios[indice].nombre}?`
+  );
 
-cargarTabla();
+  if (validar) {
+    usuarios[indice].activo = false;
+
+    // usuarios.splice(indice, 1);
+    localStorage.setItem("usuarios", JSON.stringify(usuarios));
+    cargarTabla();
+    alert("Usuario eliminado");
+  }
+};
+
+//Deslogueo de aplicación----------------------------------------
+document.querySelector("#logout").addEventListener("click", function () {
+  localStorage.removeItem("usuario");
+  location.href = "../index.html";
+});
+
+if (!usuario || usuario.username !== "admin") {
+  let respuesta = `
+  <div class="row mt-5">
+  <div class="col text-center">
+   <h3>No tiene los permisos para acceder a este contenido</h3>
+  </div>
+</div>
+  `;
+
+  contenedor.innerHTML = respuesta;
+} else {
+  cargarTabla();
+}
+
