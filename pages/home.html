@@ -17,6 +17,7 @@
     <title>Fotogram</title>
   </head>
   <body>
+
     <header class="sticky-top" id="menu">
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container justify-content-evenly">
@@ -26,13 +27,16 @@
             <form onsubmit="buscarUsuario(event)">
               <div class="d-flex align-items-center">
 
+
                 <input
                   class="form-control"
                   type="search"
                   placeholder="Buscar"
                   aria-label="Search"
+
                   id="inputBuscar"
                 /><i class="fa fa-refresh ms-2" role="button" id="refrescar" aria-hidden="true"></i>
+
               </div>
             </form>
           </div>
@@ -55,7 +59,9 @@
                   href="#"
                   id="logout"
                 >
+
                 <i class="fa fa-sign-out fa-2x" aria-hidden="true"></i></i>
+
                 </a>
               </li>
              
@@ -75,7 +81,9 @@
             <div class="card card-fixed">
               <div id="card_avatar" class="card-body d-flex">
                 <p>
+
                   Debe loguearse en la web para ver contenido. Podés hacerlo desde <a href="../index.html">aquí</a>
+
                 </p>
                 
               </div>
@@ -85,7 +93,9 @@
       </div>
     </main>
 
+
     <!-- Modal -->
+
     <div
       class="modal fade"
       id="nuevaPublic"
@@ -104,12 +114,15 @@
               class="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
+
               onclick='limpiarModal()'
+
             ></button>
           </div>
           <div class="modal-body">
             <img
-             
+
+
               id="img_modal"
               src="../img/error_img.png"
               alt="imagen de muestra"
@@ -122,16 +135,19 @@
                 type="text"
                 class="form-control"
                 placeholder="Ingrese url de la imagen"
+
                              
               />
             </div>
             <div class="mt-2">
               
+
               <textarea
                 class="form-control"
                 id="modal_textarea"
                 placeholder="Ingresa una descripción"
                 rows="3"
+
                 
               ></textarea>
               <small class="text-muted">La descripción debe tener mínimo 10 caracteres</small>
@@ -140,6 +156,7 @@
           <div class="modal-footer">
            
             <button type="button" onclick='guardarPublicacion()' class="btn btn-primary">Publicar</button>
+
           </div>
         </div>
       </div>

@@ -1,3 +1,4 @@
+
 //traer usuario logueado
 let usuario = JSON.parse(localStorage.getItem("usuario")) || null;
 
@@ -24,6 +25,7 @@ const cargarTabla = function () {
     return user.activo === true;
   });
   usuariosActivos.map(function (user, index) {
+
     let fila = document.createElement("tr");
 
     let estructura = `
@@ -38,10 +40,12 @@ const cargarTabla = function () {
             <i class="fa fa-trash-o fa-2x text-danger" aria-hidden="true" role="button" onclick="borrarUsuario(${index})"></i>
             </td>
         `;
+
     fila.innerHTML = estructura;
     contenidoTabla.appendChild(fila);
   });
 };
+
 
 //Función que abre el modal y crea los datos del usuario
 const abrirModal = function (indice) {
@@ -96,12 +100,14 @@ const cargarDatosUser = function (indice) {
                             
     `;
 
+
   form.innerHTML = datos;
 };
 
 //Funcion que actualiza los datos del usuario cargado en el modal
 const updateUsuario = function (e) {
   e.preventDefault();
+
 
   usuarios[indiceUser].nombre = document.querySelector("#nombre").value;
   usuarios[indiceUser].email = document.querySelector("#email").value;
@@ -148,3 +154,4 @@ if (!usuario || usuario.username !== "admin") {
 } else {
   cargarTabla();
 }
+

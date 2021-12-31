@@ -26,9 +26,10 @@
   border-radius: 100%;
 }
 
-.like:hover{
+.like:hover {
   cursor: pointer;
 }
+
 
 .modal-body img{
   width: 100%;
@@ -46,3 +47,4 @@ table td{
 .img_modal_avatar img{
   width: 150px;
 }
+

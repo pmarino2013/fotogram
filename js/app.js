@@ -11,6 +11,7 @@ class Usuario {
 
 let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 
+
 //form registro validación---------------------------------
 let forms = document.querySelectorAll(".needs-validation");
 console.log(forms);
@@ -37,6 +38,7 @@ Array.prototype.slice.call(forms).forEach(function (form) {
 //---------------------------------------------
 
 //---------Agregar usuario usando el formulario de registro----
+
 const agregarUsuario = function () {
   let email = document.querySelector("#validationCustom01").value;
   let nombre = document.querySelector("#validationCustom02").value;
@@ -54,6 +56,7 @@ const agregarUsuario = function () {
   } else {
     alert("Usuario ya existe, inicie sesión con sus datos");
 
+
     location.reload();
   }
 };
@@ -69,14 +72,18 @@ const validarUsuario = function (correo, username) {
   });
 
   if (checkEmail || checkUsername) {
+
     return true;
   } else {
     return false;
   }
 };
 
+
 //validar datos de logueo---------------------------------------
 
+
+//Validar los datos de logueo----------------------
 const validarDatos = function () {
   let inputEmail = document.querySelector("#input_email").value;
   let inputPassword = document.querySelector("#input_password").value;

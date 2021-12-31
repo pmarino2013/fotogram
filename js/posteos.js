@@ -1,3 +1,4 @@
+
 //clase para crear publicaciones
 class Publicacion {
   constructor(id, usuario, detalle, img, like = 0, userLike = []) {
@@ -5,6 +6,7 @@ class Publicacion {
     this.usuario = usuario;
     this.detalle = detalle;
     this.img = img;
+
     this.like = like;
     this.userLike = userLike;
   }
@@ -20,6 +22,7 @@ class Comentario {
   }
 }
 
+
 //traemos las fotos desde localstorage
 let datos = JSON.parse(localStorage.getItem("posteos")) || [];
 //traemos todos los usuarios desde localStorage
@@ -33,24 +36,30 @@ if (!usuario) {
   menuPrincipal.innerHTML = "";
 }
 
+
 //Obtener comentarios
 let coment = JSON.parse(localStorage.getItem("comentarios")) || [];
 
 //Capturamos el contenedor para los datos de usuario
+
 let contenedor_avatar = document.querySelector("#card_avatar");
 
 //Capturamos contenedor para las cards
 let contenedor_cards = document.querySelector("#contenedor_cards");
 
+
 //---variable si la imagen que se agrega está rota-----------
 let imgRota = false;
 
 //capturamos el modal que usamos para agregar publicaciones
+
 let myModal = new bootstrap.Modal(document.getElementById("nuevaPublic"), {
   keyboard: false,
 });
 
+
 //creamos estructura con la info del usuario
+
 let estructura_avatar = `
 <div>
 <img
@@ -179,12 +188,15 @@ const meGusta = function (id) {
     return item === usuario.username;
   });
 
+  console.log(validarUsuario);
   //Si el usuario no le dio Like
+  console.log(datos[indice].userLike.indexOf(validarUsuario));
   if (!validarUsuario) {
     datos[indice].like += 1;
     datos[indice].userLike.push(usuario.username);
   } else {
     datos[indice].like -= 1;
+
 
     //----borrar usuario del arreglo userLike-----
 
@@ -207,6 +219,7 @@ const agregarImagen = function (e) {
 
   if (e.keyCode === 13) {
     document.querySelector("#img_modal").src = campo.value;
+
   }
 };
 //--------------------------------------------------
@@ -251,6 +264,7 @@ const buscarUsuario = function (e) {
   e.preventDefault();
   let buscado = document.querySelector("#inputBuscar").value;
 
+
   let resultado = datos.filter(function (foto) {
     return foto.usuario.toUpperCase().includes(buscado.toUpperCase());
   });
@@ -291,11 +305,14 @@ const mostrarComentario = function (id) {
 };
 
 //Si hacemos click en el boton para agregar publicación
+
 document.querySelector("#addPublic").addEventListener("click", function () {
   myModal.show();
 });
 
+
 //Si presionamos una tecla en el input del modal donde va la imagen
+
 document
   .querySelector("#text_modal")
   .addEventListener("keydown", agregarImagen);
@@ -327,3 +344,4 @@ document.querySelector("#logout").addEventListener("click", function () {
 
 //Carga inicial de fotos
 crearCards(datos);
+
