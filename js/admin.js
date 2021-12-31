@@ -97,8 +97,6 @@ const cargarDatosUser = function (indice) {
     `;
 
   form.innerHTML = datos;
-
-  // form.appendChild(formulario)
 };
 
 //Funcion que actualiza los datos del usuario cargado en el modal

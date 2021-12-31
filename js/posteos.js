@@ -20,37 +20,6 @@ class Comentario {
   }
 }
 
-// let datos = [
-//   {
-//     id: 1,
-//     usuario: "suzukigame",
-//     detalle: "Imagen de paisaje bonito",
-//     img: "https://www.nationalgeographic.com.es/medio/2021/05/05/lago-wanakanueva-zelanda_3bca218b_800x800.jpg",
-//     like: 0,
-//     userLike: [],
-//   },
-//   {
-//     id: 2,
-//     usuario: "miraflores",
-//     detalle: "Paisaje exótico",
-//     img: "http://2.bp.blogspot.com/-8KuSaGEYEMs/UPSuL75AdoI/AAAAAAAAOLI/8Bb7HfkOQXU/s1600/nuevos+paisajes+floridos+con+carretera.jpg",
-//     like: 0,
-//     userLike: [],
-//   },
-//   {
-//     id: 3,
-//     usuario: "pmarino",
-//     detalle: "Paisaje vistoso",
-//     img: "https://www.jardineriaon.com/wp-content/uploads/2020/11/paisajes-naturales.jpg",
-//     like: 0,
-//     userLike: [],
-//   },
-// ];
-
-// const inicializarDatos = function (datos) {
-//   localStorage.setItem("posteos", JSON.stringify(datos));
-// };
-
 //traemos las fotos desde localstorage
 let datos = JSON.parse(localStorage.getItem("posteos")) || [];
 //traemos todos los usuarios desde localStorage
@@ -235,10 +204,8 @@ const meGusta = function (id) {
 //Función agregar imagen------------------------
 const agregarImagen = function (e) {
   let campo = document.querySelector("#text_modal");
-  // imgRota = false;
+
   if (e.keyCode === 13) {
-    // console.log(e);
-    // console.log(campo.value);
     document.querySelector("#img_modal").src = campo.value;
   }
 };
@@ -250,7 +217,7 @@ const guardarPublicacion = function () {
   let user = usuario.username;
   let detalle = document.querySelector("#modal_textarea").value;
   let imagen = document.querySelector("#img_modal").src;
-  // console.log(imagen);
+
   if (imagen === "http://127.0.0.1:5500/img/error_img.png" || imgRota) {
     return alert("La imagen no es válida");
   }
@@ -306,7 +273,6 @@ const crearComentario = function (id) {
     localStorage.setItem("comentarios", JSON.stringify(coment));
 
     crearCards(datos);
-    // mostrarComentario(id)
   }
 };
 
@@ -321,8 +287,6 @@ const mostrarComentario = function (id) {
     let parrafo = document.createElement("p");
     parrafo.innerHTML = `<b>${item.usuario}</b> ${item.comentario}`;
     document.querySelector(`#contenedor_parrafo${id}`).append(parrafo);
-    // console.log(comentarios)
-    // return texto
   });
 };
 
@@ -344,10 +308,6 @@ document.querySelector("#text_modal").addEventListener("click", function () {
   imgRota = false;
 });
 
-// document.querySelector("#text_modal").addEventListener('click',function(){
-//   document.querySelector("#text_modal").value=''
-// })
-
 //Obtenemos el error cuando la imagen no es correcta y cambiamos el valor de imgRota
 document.querySelector("#img_modal").addEventListener("error", function () {
   imgRota = true;
@@ -365,7 +325,5 @@ document.querySelector("#logout").addEventListener("click", function () {
   location.href = "../index.html";
 });
 
-// crearComentario(1640400168547)
 //Carga inicial de fotos
 crearCards(datos);
-// inicializarDatos(datos);

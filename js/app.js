@@ -11,22 +11,6 @@ class Usuario {
 
 let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 
-// let user1 = new Usuario(
-//   "Pedro",
-//   "pgonzalez",
-//   "pedritobueno@gmail.com",
-//   "pp123456",
-//   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSI3b7G544olENi0w5Nxr95EW3K3AB5a3t-mbaVh644XQIRNaRXJ2WqHAAHcJPQajU_jmo&usqp=CAU"
-// );
-
-// let user2 = new Usuario(
-//   "Pablo",
-//   "Marino",
-//   "pmarino@gmail.com",
-//   "pm123456",
-//   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfbgCrlhIjWnyLKz3L_XPLblDNG9GqiAn4Ujf5f_6pNx-NwPzURiBtZNItCq3Sgmzj2T0&usqp=CAU"
-// );
-
 //form registro validación---------------------------------
 let forms = document.querySelectorAll(".needs-validation");
 console.log(forms);
@@ -69,13 +53,10 @@ const agregarUsuario = function () {
     location.href = "../index.html";
   } else {
     alert("Usuario ya existe, inicie sesión con sus datos");
-    // document.querySelector('.needs-validation').reset()
+
     location.reload();
   }
 };
-
-// agregarUsuario(user1);
-// agregarUsuario(user2);
 
 //Validar si el correo y username ya existe en el arreglo de susuarios
 const validarUsuario = function (correo, username) {
@@ -104,7 +85,6 @@ const validarDatos = function () {
     return usuario.email === inputEmail;
   });
 
-  //   console.log(validar_email);
   if (validar_email) {
     //Verifico si el usuario está activo sino no avanzará
     if (!validar_email.activo) {
