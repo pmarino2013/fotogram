@@ -1,14 +1,15 @@
 class Usuario {
-  constructor(nombre, username, email, password, imagen) {
+  constructor(nombre, username, email, password, imagen, activo = true) {
     this.nombre = nombre;
     this.username = username;
     this.email = email;
     this.password = password;
     this.imagen = imagen;
+    this.activo = activo;
   }
 }
 
-let usuarios = JSON.parse(localStorage.getItem("usuarios") || []);
+let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 
 // let user1 = new Usuario(
 //   "Pedro",
@@ -25,30 +26,8 @@ let usuarios = JSON.parse(localStorage.getItem("usuarios") || []);
 //   "pm123456",
 //   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfbgCrlhIjWnyLKz3L_XPLblDNG9GqiAn4Ujf5f_6pNx-NwPzURiBtZNItCq3Sgmzj2T0&usqp=CAU"
 // );
-const agregarUsuario = function () {
-  let email = document.querySelector("#validationCustom01").value;
-  let nombre = document.querySelector("#validationCustom02").value;
-  let username = document.querySelector("#validationCustom03").value;
-  let password = document.querySelector("#validationCustom04").value;
-  let avatar = document.querySelector("#validationCustom05").value;
 
-  let validar=validarUsuario(email, username)
-    
-  if (!validar) {
-    usuarios.push(new Usuario(nombre, username, email, password, avatar));
-    localStorage.setItem("usuarios", JSON.stringify(usuarios));
-    location.href='../index.html'
-  } else {
-    alert("Usuario ya existe, inicie sesión con sus datos");
-    // document.querySelector('.needs-validation').reset()
-    location.reload();
-  }
-};
-
-// agregarUsuario(user1);
-// agregarUsuario(user2);
-
-//form registro-------------------------------------------
+//form registro validación---------------------------------
 let forms = document.querySelectorAll(".needs-validation");
 console.log(forms);
 // Loop over them and prevent submission
@@ -72,6 +51,33 @@ Array.prototype.slice.call(forms).forEach(function (form) {
 });
 
 //---------------------------------------------
+
+//---------Agregar usuario usando el formulario de registro----
+const agregarUsuario = function () {
+  let email = document.querySelector("#validationCustom01").value;
+  let nombre = document.querySelector("#validationCustom02").value;
+  let username = document.querySelector("#validationCustom03").value;
+  let password = document.querySelector("#validationCustom04").value;
+  let avatar = document.querySelector("#validationCustom05").value;
+
+  //llamo a la función que valida email y username si ya existe
+  let validar = validarUsuario(email, username);
+
+  if (!validar) {
+    usuarios.push(new Usuario(nombre, username, email, password, avatar));
+    localStorage.setItem("usuarios", JSON.stringify(usuarios));
+    location.href = "../index.html";
+  } else {
+    alert("Usuario ya existe, inicie sesión con sus datos");
+    // document.querySelector('.needs-validation').reset()
+    location.reload();
+  }
+};
+
+// agregarUsuario(user1);
+// agregarUsuario(user2);
+
+//Validar si el correo y username ya existe en el arreglo de susuarios
 const validarUsuario = function (correo, username) {
   let checkEmail = usuarios.find(function (usuario) {
     return usuario.email === correo;
@@ -100,6 +106,12 @@ const validarDatos = function () {
 
   //   console.log(validar_email);
   if (validar_email) {
+    //Verifico si el usuario está activo sino no avanzará
+    if (!validar_email.activo) {
+      return alert("No puede iniciar sesión con este usuario");
+    }
+    //-------------------------------------------
+
     if (validar_email.password === inputPassword) {
       console.log("Usuario encontrado");
       let datos = {

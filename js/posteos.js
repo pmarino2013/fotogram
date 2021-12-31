@@ -1,4 +1,3 @@
-
 //clase para crear publicaciones
 class Publicacion {
   constructor(id, usuario, detalle, img, like = 0, userLike = []) {
@@ -12,17 +11,14 @@ class Publicacion {
 }
 
 //Clase para crear comentarios
-class Comentario{
-  constructor(id, id_foto, usuario,comentario){
-
-      this.id=id
-      this.id_foto=id_foto
-      this.usuario=usuario
-      this.comentario=comentario
-
+class Comentario {
+  constructor(id, id_foto, usuario, comentario) {
+    this.id = id;
+    this.id_foto = id_foto;
+    this.usuario = usuario;
+    this.comentario = comentario;
   }
 }
-
 
 // let datos = [
 //   {
@@ -57,21 +53,19 @@ class Comentario{
 
 //traemos las fotos desde localstorage
 let datos = JSON.parse(localStorage.getItem("posteos")) || [];
+//traemos todos los usuarios desde localStorage
+let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 //Obtenemos los datos del usuario logueado
 let usuario = JSON.parse(localStorage.getItem("usuario") || null);
 
-
 //----------------Menu-------------------
-let menuPrincipal=document.querySelector('#menu')
-if(!usuario){
-  menuPrincipal.innerHTML=''
+let menuPrincipal = document.querySelector("#menu");
+if (!usuario) {
+  menuPrincipal.innerHTML = "";
 }
 
-
-
 //Obtener comentarios
-let coment=JSON.parse(localStorage.getItem('comentarios')) || []
-
+let coment = JSON.parse(localStorage.getItem("comentarios")) || [];
 
 //Capturamos el contenedor para los datos de usuario
 let contenedor_avatar = document.querySelector("#card_avatar");
@@ -98,24 +92,48 @@ src="../img/${usuario.avatar}.png"
 <div>
 <span class="fw-bold">${usuario.username}</span>
 <p class="text-muted">${usuario.email}</p>
+${
+  usuario.username === "admin"
+    ? '<a href="../pages/admin.html">Administración</a>'
+    : ""
+}
+
 </div>
 `;
 
 //agregamos la estructura de la card con datos del usuario a su contenedor
 contenedor_avatar.innerHTML = estructura_avatar;
 
-
-
-
 //Crear Tarjetas--------------------------------------
 const crearCards = function (array) {
   //limpiamos contenedor
   contenedor_cards.innerHTML = "";
 
-  if (array.length === 0) {
+  //--------------Mostrar solo usuarios activos---------------------
+  let usuariosActivos = usuarios.filter(function (user) {
+    return user.activo === true;
+  });
+
+  let arregloNuevo = array.map(function (user) {
+    for (const item of usuariosActivos) {
+      if (item.username === user.usuario) {
+        return user;
+      }
+    }
+  });
+  let posteosActivos = arregloNuevo.filter(function (post) {
+    return post !== undefined;
+  });
+
+  //----------------------------------------------------------------
+
+  //si no se encontraron resultados de posteos activos
+  if (posteosActivos.length === 0) {
     return (contenedor_cards.innerHTML = `<h4>No se encontraron resultados para la búsqueda</h4>`);
   }
-  array.map(function (item) {
+  //----------------------------------------------------
+  // array.map(function (item) {
+  posteosActivos.map(function (item) {
     let card = document.createElement("div");
     card.classList = "card mb-3";
     let contenido_card = `
@@ -151,10 +169,14 @@ const crearCards = function (array) {
             </div>
         <div class="card-footer d-flex align-items-center">
           <div class="col-10">
-            <textarea class="form-control" id="textarea${item.id}" rows="1" placeholder="Agregar un comentario"></textarea>
+            <textarea class="form-control" id="textarea${
+              item.id
+            }" rows="1" placeholder="Agregar un comentario"></textarea>
           </div>
           <div class="col-2 ms-2">
-              <span class="text-primary" role="button"  onclick="crearComentario(${item.id})">Publicar</span>
+              <span class="text-primary" role="button"  onclick="crearComentario(${
+                item.id
+              })">Publicar</span>
           
           </div>
         </div>   
@@ -162,7 +184,7 @@ const crearCards = function (array) {
 
     card.innerHTML = contenido_card;
     contenedor_cards.appendChild(card);
-    mostrarComentario(item.id)
+    mostrarComentario(item.id);
   });
 };
 
@@ -208,8 +230,6 @@ const meGusta = function (id) {
   //guardar cambios en localstorage y recargar tarjetas
   localStorage.setItem("posteos", JSON.stringify(datos));
   crearCards(datos);
-
-  
 };
 
 //Función agregar imagen------------------------
@@ -220,7 +240,6 @@ const agregarImagen = function (e) {
     // console.log(e);
     // console.log(campo.value);
     document.querySelector("#img_modal").src = campo.value;
-
   }
 };
 //--------------------------------------------------
@@ -232,13 +251,13 @@ const guardarPublicacion = function () {
   let detalle = document.querySelector("#modal_textarea").value;
   let imagen = document.querySelector("#img_modal").src;
   // console.log(imagen);
-  if (imagen === "http://127.0.0.1:5500/img/error_img.png" || imgRota)  {
+  if (imagen === "http://127.0.0.1:5500/img/error_img.png" || imgRota) {
     return alert("La imagen no es válida");
   }
   if (detalle.length < 10) {
     return alert("La descripción debe tener más de 10 caracteres");
   }
-  
+
   datos.unshift(new Publicacion(id, user, detalle, imagen));
   localStorage.setItem("posteos", JSON.stringify(datos));
   crearCards(datos);
@@ -276,40 +295,36 @@ const buscarUsuario = function (e) {
 
 //------Crear comentario------------------
 
-const crearComentario=function(id){
-  let id_comentario=new Date().getTime()
-  let id_foto=id
-  let user=usuario.username
-  let comentario=document.querySelector(`#textarea${id}`).value
-  
-  if(comentario.length>4){
+const crearComentario = function (id) {
+  let id_comentario = new Date().getTime();
+  let id_foto = id;
+  let user = usuario.username;
+  let comentario = document.querySelector(`#textarea${id}`).value;
 
-    coment.push(new Comentario(id_comentario,id_foto,user,comentario))
-    localStorage.setItem('comentarios',JSON.stringify(coment))
-    
-    crearCards(datos)
+  if (comentario.length > 4) {
+    coment.push(new Comentario(id_comentario, id_foto, user, comentario));
+    localStorage.setItem("comentarios", JSON.stringify(coment));
+
+    crearCards(datos);
     // mostrarComentario(id)
   }
-  
-  }
+};
 
 //Mostrar comentario-------------------------------
-const mostrarComentario=function(id){
-  let comentarios=coment.filter(function(comentario){
-  return comentario.id_foto===id
-  })
-  document.querySelector(`#contenedor_parrafo${id}`).innerHTML=""
+const mostrarComentario = function (id) {
+  let comentarios = coment.filter(function (comentario) {
+    return comentario.id_foto === id;
+  });
+  document.querySelector(`#contenedor_parrafo${id}`).innerHTML = "";
 
-  comentarios.map(function(item){
-
-    let parrafo=document.createElement('p')
-    parrafo.innerHTML=`<b>${item.usuario}</b> ${item.comentario}`
-    document.querySelector(`#contenedor_parrafo${id}`).append(parrafo)
-  // console.log(comentarios)
-  // return texto
-})
-}
-
+  comentarios.map(function (item) {
+    let parrafo = document.createElement("p");
+    parrafo.innerHTML = `<b>${item.usuario}</b> ${item.comentario}`;
+    document.querySelector(`#contenedor_parrafo${id}`).append(parrafo);
+    // console.log(comentarios)
+    // return texto
+  });
+};
 
 //Si hacemos click en el boton para agregar publicación
 document.querySelector("#addPublic").addEventListener("click", function () {
@@ -321,7 +336,7 @@ document
   .querySelector("#text_modal")
   .addEventListener("keydown", agregarImagen);
 
-  //Cuando hacemos click en el input del modal para cargar la imagen se limpia el campo
+//Cuando hacemos click en el input del modal para cargar la imagen se limpia el campo
 //Tambien coloca la imagen por defecto y cambia el valor de imgRota a falso
 document.querySelector("#text_modal").addEventListener("click", function () {
   document.querySelector("#text_modal").value = "";
@@ -329,9 +344,9 @@ document.querySelector("#text_modal").addEventListener("click", function () {
   imgRota = false;
 });
 
-  // document.querySelector("#text_modal").addEventListener('click',function(){
-  //   document.querySelector("#text_modal").value=''
-  // })
+// document.querySelector("#text_modal").addEventListener('click',function(){
+//   document.querySelector("#text_modal").value=''
+// })
 
 //Obtenemos el error cuando la imagen no es correcta y cambiamos el valor de imgRota
 document.querySelector("#img_modal").addEventListener("error", function () {
@@ -344,14 +359,13 @@ document.querySelector("#refrescar").addEventListener("click", function () {
   document.querySelector("#inputBuscar").value = "";
 });
 
-document.querySelector('#logout').addEventListener('click',function(){
-
-  localStorage.removeItem('usuario')
-  location.href='../index.html'
-})
+//Deslogueo de aplicación----------------------------------------
+document.querySelector("#logout").addEventListener("click", function () {
+  localStorage.removeItem("usuario");
+  location.href = "../index.html";
+});
 
 // crearComentario(1640400168547)
 //Carga inicial de fotos
 crearCards(datos);
 // inicializarDatos(datos);
-

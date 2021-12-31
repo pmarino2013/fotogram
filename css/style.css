@@ -36,4 +36,13 @@
 
 textarea{
   resize: none;
+  
+}
+
+table td{
+  vertical-align: middle;
+}
+
+.img_modal_avatar img{
+  width: 150px;
 }
